@@ -1,0 +1,6 @@
+-- r_energydrinks
+junk_can_blue              = { name = 'junk_can_blue', label = 'Junk Blue', weight = 110, type = 'item', image = 'junk_can_blue.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Blue Junk Energy' },
+junk_can_green             = { name = 'junk_can_green', label = 'Junk Green', weight = 110, type = 'item', image = 'junk_can_green.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Green Junk Energy' },
+junk_can_orange            = { name = 'junk_can_orange', label = 'Junk Orange', weight = 110, type = 'item', image = 'junk_can_orange.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Orange Junk Energy' },
+junk_can_purple            = { name = 'junk_can_purple', label = 'Junk Purple', weight = 110, type = 'item', image = 'junk_can_purple.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Purple Junk Energy' },
+junk_can_red               = { name = 'junk_can_red', label = 'Junk Red', weight = 110, type = 'item', image = 'junk_can_red.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Red Junk Energy' },

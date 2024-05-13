@@ -15,8 +15,8 @@ Cfg = {
         Enabled = true,
         Locations = {
             vec4(-47.87, -1090.21, 25.42, 338.36), -- Main PDM
-            -- vec4(324.03, -233.61, 53.22, 249.11), -- Pinkcage Motel
-            -- vec4(-11.89, -1478.20, 29.50, 138.79), -- Strawberry Liquor Store
+            vec4(324.03, -233.61, 53.22, 249.11), -- Pinkcage Motel
+            vec4(-11.89, -1478.20, 29.50, 138.79), -- Strawberry Liquor Store
         },
     },
 

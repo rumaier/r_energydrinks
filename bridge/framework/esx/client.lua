@@ -14,8 +14,7 @@ Framework = {
     end,
 }
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function()
+RegisterNetEvent('esx:playerLoaded', function()
     if Cfg.VendingMachines.Enabled then
         SetVendingMachines()
     end
