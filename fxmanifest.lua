@@ -3,10 +3,10 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-name 'base'
-description 'base for r_scripts resources'
+name 'r_energydrinks'
+description 'A simple energy drink resource to give your players a boost!'
 author 'r_scripts'
-version '1.0.0'
+version '0.9.5'
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
