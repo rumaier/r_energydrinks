@@ -14,6 +14,7 @@ This FiveM resource enhances gameplay by allowing players to buy and consume ene
 ## Dependencies
 
 - [ox_lib](https://github.com/overextended/ox_lib/releases)
+- [ox_target](https://github.com/overextended/ox_target/releases)
 - [es_extended](https://github.com/esx-framework) or [qb-core](https://github.com/qbcore-framework)
 
 ## Installation
