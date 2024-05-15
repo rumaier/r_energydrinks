@@ -6,7 +6,7 @@ lua54 'yes'
 name 'r_energydrinks'
 description 'A simple energy drink resource to give your players a boost!'
 author 'r_scripts'
-version '0.9.6'
+version '1.0.0'
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
@@ -29,6 +29,8 @@ shared_scripts {
 files {
     'assets/images/*.png',
 }
+
+data_file 'DLC_ITYP_REQUEST' 'rscripts_junkcans.ytyp'
 
 dependencies {
     'ox_lib',

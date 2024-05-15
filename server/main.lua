@@ -1,35 +1,53 @@
 local drinks = {
-    'junk_teal',
+    'junk_blue',
     'junk_red',
     'junk_orange',
     'junk_purple',
     'junk_green'
 }
 
-lib.callback.register('r_energydrinks:checkInven', function(item)
+lib.callback.register('r_energydrinks:checkBalance', function()
     local src = source
-    local count = Inventory.getPlayerItem(src, item, nil)
-    if count > 0 then
-        Inventory.removePlayerItem(src, item, 1, nil)
+    local balance = Framework.getAccountBalance(src, 'money')
+    if balance >= Cfg.VendingMachines.DrinkPrice then
         return true
-    elseif count < 1 then
+    elseif balance < Cfg.VendingMachines.DrinkPrice then
         return false
     end
 end)
 
-RegisterNetEvent('r_energydrinks:buyDrink', function(color)
+RegisterNetEvent('r_energydrinks:buyDrink', function(color, dist)
     local src = source
-    local item = string.format('junk_can_%s', color)
+    if dist > 5 then print(''.. src ..' is a filthy boi. [Cheater]') return end
+    local item = string.format('junk_%s', color)
+    Framework.removeAccountMoney(src, 'money', Cfg.VendingMachines.DrinkPrice)
+    Wait(2500)
     Inventory.givePlayerItem(src, item, 1, nil)
 end)
 
+local isDrinking = {}
 function RegisterUsableEnergyDrinks()
     for i = 1, #drinks do
-        Framework.registerUsableItem(drinks[i], function()
-            -- trigger client event to do server callback to check for item and remove item..return true, if true trigger function for drinking
+        Framework.registerUsableItem(drinks[i], function(src, item)
+            if isDrinking[src] then return false end
+            isDrinking[src] = true
+            SetTimeout(3000, function()
+                isDrinking[src] = nil
+            end)
+            Inventory.removePlayerItem(src, item, 1)
+            local hasDrunk = lib.callback.await('r_energydrinks:drinkJunk', src, drinks[i]:gsub("junk_", ""))
+            if not hasDrunk then
+                Inventory.givePlayerItem(src, item, 1, nil)
+            end
         end)
     end
 end
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        RegisterUsableEnergyDrinks()
+    end
+end)
 
 print('ServerSide Is Loaded [r_energydrinks, r_scripts gives you wings.]')
 print('I put an energy drink in my coffee this morning.')
