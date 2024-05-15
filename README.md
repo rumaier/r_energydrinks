@@ -9,6 +9,7 @@ This FiveM resource enhances gameplay by allowing players to buy and consume ene
 - 🙋 Players can purchase and consume energy drinks for temporary boosts to stamina and movement speed.
 - 📝 Spawn Junk vending machines in configurable locations.
 - ⚡ Easily enable or disable the effects and configure duration of the energy drinks in the config.
+- 🌈 Custom retextured props in all flavor colors to increase realism and immersion.
 - 🔄 Supports both ESX and QBCore, ensuring compatibility with the major frameworks used in FiveM servers.
 
 ## Dependencies
