@@ -7,7 +7,7 @@
 
 Cfg = {
     -- Server Options
-    Language = 'en',          -- Determines the language. ('en': English)
+    Language = 'en',          -- Determines the language. ('en': English) You can add your own or translate the english file if needed.
     Notification = 'default', -- Determines the notification system. ('default', 'ox', 'custom': can be customized in bridge/framework/YOURFRAMEWORK)
 
     -- Vending Machine Options
