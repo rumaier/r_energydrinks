@@ -159,15 +159,20 @@ local function setVendingTargets()
     } })
 end
 
+local machinesSet = false
 function SetVendingMachines()
-    lib.requestModel(vendModel)
-    for i = 1, #Cfg.VendingMachines.Locations do
-        local machine = CreateObject(vendModel, Cfg.VendingMachines.Locations[i].x, Cfg.VendingMachines.Locations[i].y, Cfg.VendingMachines.Locations[i].z, false, false, false)
-        SetEntityHeading(machine, Cfg.VendingMachines.Locations[i].w)
-        FreezeEntityPosition(machine, true)
-        table.insert(vMachines, machine)
+    if not machinesSet then
+        lib.requestModel(vendModel)
+        for i = 1, #Cfg.VendingMachines.Locations do
+            local machine = CreateObject(vendModel, Cfg.VendingMachines.Locations[i].x,
+                Cfg.VendingMachines.Locations[i].y, Cfg.VendingMachines.Locations[i].z, false, false, false)
+            SetEntityHeading(machine, Cfg.VendingMachines.Locations[i].w)
+            FreezeEntityPosition(machine, true)
+            table.insert(vMachines, machine)
+        end
+        setVendingTargets()
     end
-    setVendingTargets()
+    machinesSet = true
     SetModelAsNoLongerNeeded(vendModel)
 end
 
