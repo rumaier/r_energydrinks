@@ -45,7 +45,6 @@ end
 local function resetEffects()
     local player = cache.ped
     local curStrength = GetTimecycleModifierStrength()
-    print('curStrength:', curStrength)
     for i = 1, (curStrength * 100) do
         SetTimecycleModifierStrength(curStrength - (i * 0.01))
         Wait(0)
