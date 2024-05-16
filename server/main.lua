@@ -21,7 +21,7 @@ RegisterNetEvent('r_energydrinks:buyDrink', function(color, dist)
     if dist > 5 then print(''.. src ..' is a filthy boi. [Cheater]') return end
     local item = string.format('junk_%s', color)
     Framework.removeAccountMoney(src, 'money', Cfg.VendingMachines.DrinkPrice)
-    Wait(2500)
+    Wait(3500)
     Inventory.givePlayerItem(src, item, 1, nil)
 end)
 

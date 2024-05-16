@@ -6,7 +6,7 @@ lua54 'yes'
 name 'r_energydrinks'
 description 'A simple energy drink resource to give your players a boost!'
 author 'r_scripts'
-version '1.0.0'
+version '1.0.1'
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',

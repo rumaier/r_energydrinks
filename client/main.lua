@@ -16,21 +16,15 @@ local function buyDrink(color)
             if (v.object == i) then
                 local mCoords = vec3(v.coords.x, v.coords.y, v.coords.z)
                 local dist = (#pCoords - #mCoords)
-                local animDict1 = 'anim@mp_radio@high_life_apment'
-                local animDict2 = 'random@domestic'
-                local anim1 = 'button_press_living_room'
-                local anim2 = 'pickup_low'
+                local animDict1 = 'mini@sprunk'
+                local anim1 = 'plyr_buy_drink_pt1'
                 lib.requestAnimDict(animDict1)
-                lib.requestAnimDict(animDict2)
                 FreezeEntityPosition(player, true)
-                TaskPlayAnim(player, animDict1, anim1, 8.0, 4.0, 1500, 0, 0.0, false, false, false)
+                TaskPlayAnim(player, animDict1, anim1, 8.0, 4.0, 4150, 0, 0.0, false, false, false)
                 TriggerServerEvent('r_energydrinks:buyDrink', color, dist)
-                Wait(1500)
-                TaskPlayAnim(player, animDict2, anim2, 8.0, 4.0, 1500, 0, 0.0, false, false, false)
-                Wait(1500)
+                Wait(4300)
                 FreezeEntityPosition(player, false)
                 RemoveAnimDict(animDict1)
-                RemoveAnimDict(animDict2)
                 return
             end
         end
@@ -50,9 +44,16 @@ end
 
 local function resetEffects()
     local player = cache.ped
+    local curStrength = GetTimecycleModifierStrength()
+    print('curStrength:', curStrength)
+    for i = 1, (curStrength * 100) do
+        SetTimecycleModifierStrength(curStrength - (i * 0.01))
+        Wait(0)
+    end
+    Wait(100)
+    SetTimecycleModifier("default")
     StatSetInt(`MP0_STAMINA`, 25, true)
     SetPedMoveRateOverride(player, 1.0)
-    SetRunSprintMultiplierForPlayer(player, 1.0)
     Framework.Notify('The energy drink has worn off..', 'info')
 end
 
@@ -84,6 +85,11 @@ lib.callback.register('r_energydrinks:drinkJunk', function(color)
     })
     SetModelAsNoLongerNeeded(props[color])
     Framework.Notify('You feel the Junk coursing through your veins!', 'info')
+    SetTransitionTimecycleModifier("rply_contrast", 1)
+    for i = 1, 60 do
+        SetTimecycleModifierStrength(i * 0.01)
+        Wait(0)
+    end
     if Cfg.Effects.StaminaBoost then
         StatSetInt(`MP0_STAMINA`, 75, true)
     end
