@@ -18,8 +18,7 @@ Inventory = {
 
     removePlayerItem = function(src, item, qty)
         local src = src or source
-        local player = QBCore.Functions.GetPlayer(src)
-        player.Functions.RemoveItem(item.name, qty)
+        exports['qb-inventory']:RemoveItem(src, item.name, qty)
     end,
 
     getPlayerItem = function(src, item, metadata)
