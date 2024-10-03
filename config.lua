@@ -4,13 +4,24 @@
 -- | |  |  __/ | | |  __/ | | (_| | |_| | (_| | |  | | | | |   <\__ \
 -- |_|___\___|_| |_|\___|_|  \__, |\__, |\__,_|_|  |_|_| |_|_|\_\___/
 --  |_____|                  |___/ |___/
-
+--
+--  Need support? Join our Discord server for help: https://discord.gg/r-scripts
+--
 Cfg = {
-    -- Server Options
-    Language = 'en',          -- Determines the language. ('en': English) You can add your own or translate the english file if needed.
-    Notification = 'default', -- Determines the notification system. ('default', 'ox', 'custom': can be customized in bridge/framework/YOURFRAMEWORK)
-
-    -- Vending Machine Options
+    --  ___  ___ _ ____   _____ _ __
+    -- / __|/ _ \ '__\ \ / / _ \ '__|
+    -- \__ \  __/ |   \ V /  __/ |
+    -- |___/\___|_|    \_/ \___|_|
+    Server = {
+        Language = 'en',             -- Resource language ('en': English, 'es': Spanish, 'fr': French, 'de': German, 'pt': Portuguese, 'zh': Chinese)
+        VersionCheck = true,         -- Version check (true: enabled, false: disabled)
+    },
+    --              _   _
+    --   ___  _ __ | |_(_) ___  _ __  ___
+    --  / _ \| '_ \| __| |/ _ \| '_ \/ __|
+    -- | (_) | |_) | |_| | (_) | | | \__ \
+    --  \___/| .__/ \__|_|\___/|_| |_|___/
+    --       |_|
     VendingMachines = {
         Enabled = true,                            -- Determines if Junk Vending Machines spawn in the defined locations below.
         DrinkPrice = 3,                            -- Determines the price of a Junk Energy Drink from the machines.
@@ -21,13 +32,16 @@ Cfg = {
         },
     },
 
-    -- Energy Drink Options
     Effects = {
         StaminaBoost = true, -- Determines if energy drinks give a Stamina Boost.
         SprintBoost = true,  -- Determines if energy drinks give a Sprint Boost.
         Duration = 60        -- Determines how long the above effects will last on a player.
     },
-
-    -- Debug
-    Debug = true -- If you dont know what this is, just leave it alone.
+    --      _      _
+    --   __| | ___| |__  _   _  __ _
+    --  / _` |/ _ \ '_ \| | | |/ _` |
+    -- | (_| |  __/ |_) | |_| | (_| |
+    --  \__,_|\___|_.__/ \__,_|\__, |
+    --                         |___/
+    Debug = true -- Enable debug prints (true: enabled, false: disabled)
 }

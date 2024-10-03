@@ -6,24 +6,23 @@ lua54 'yes'
 name 'r_energydrinks'
 description 'A simple energy drink resource to give your players a boost!'
 author 'r_scripts'
-version '1.0.1'
-
-server_scripts {
-    '@oxmysql/lib/MySQL.lua',
-    'bridge/**/server.lua',
-    'server/*.lua',
-}
-
-client_scripts {
-    'bridge/**/client.lua',
-    'client/*.lua',
-}
+version '1.0.2'
 
 shared_scripts {
     '@ox_lib/init.lua',
+    'utils/shared.lua',
     'locales/*.lua',
-    'shared/*.lua',
     'config.lua',
+}
+
+server_scripts {
+    'utils/server.lua',
+    'src/server/*.lua',
+}
+
+client_scripts {
+    'utils/client.lua',
+    'src/client/*.lua',
 }
 
 files {
@@ -34,10 +33,11 @@ data_file 'DLC_ITYP_REQUEST' 'rscripts_junkcans.ytyp'
 
 dependencies {
     'ox_lib',
+    'r_bridge',
 }
 
 escrow_ignore {
-    'bridge/**/*.lua',
-    'locales/*.lua',
-    'config.lua' 
+    'install/**/*.*',
+    'locales/*.*',
+    'config.*' 
 }

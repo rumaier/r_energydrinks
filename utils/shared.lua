@@ -1,8 +1,9 @@
 Language = Language or {}
 
+---@param str string -- Name of the string to pull from the locale file
 function _L(str, ...)
     if str then
-        local string = Language[Cfg.Language][str]
+        local string = Language[Cfg.Server.Language][str]
         if string then
             return string.format(string, ...)
         else
@@ -11,4 +12,8 @@ function _L(str, ...)
     else
         return "ERR_TRANSLATE_404"
     end
+end
+
+math.lerp = function(a, b, t)
+    return a + (b - a) * t
 end
