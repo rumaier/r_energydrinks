@@ -6,7 +6,7 @@ lua54 'yes'
 name 'r_energydrinks'
 description 'A simple energy drink resource to give your players a boost!'
 author 'r_scripts'
-version '1.0.2'
+version '1.0.3'
 
 shared_scripts {
     '@ox_lib/init.lua',
