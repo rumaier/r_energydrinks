@@ -5,7 +5,7 @@ RegisterNetEvent(onPlayerLoaded, function()
     SetVendPoints()
 end)
 
-function debug(...)
+function _debug(...)
     if Cfg.Debug then
         print(...)
     end
