@@ -1,6 +1,30 @@
 Language = Language or {}
 Language['en'] = { -- English
 
+    -- Target Options
+    open_machine = 'Open Junk Machine',
+
+    -- Notifications
+    notify_title = 'Energy Drinks',
+    already_junked = 'You are already hyped up on Junk!',
+    feel_junked = 'You feel the Junk coursing through your veins!',
+    wore_off = 'The Junk has worn off...',
+    not_enough_money = 'You do not have enough money!',
+    bought_junk = 'You bought a %s Junk Energy for $%s!',
+
+    -- Progress Bars
+    drinking_junk = 'Drinking Junk...',
+
+    -- Menu Titles
+    junk_machine = 'Junk Machine',
+
+    -- Menu Options
+    junk_blue = 'Blue Junk',
+    junk_red = 'Red Junk',
+    junk_orange = 'Orange Junk',
+    junk_purple = 'Purple Junk',
+    junk_green = 'Green Junk',
+
     -- Webhook
     player_id = 'Player ID',
     username = 'Username',

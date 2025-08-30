@@ -1,0 +1,35 @@
+    ['junk_blue'] = {
+		label = 'Junk Blue',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+
+    ['junk_green'] = {
+		label = 'Junk Green',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+
+    ['junk_orange'] = {
+		label = 'Junk Orange',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+
+    ['junk_purple'] = {
+		label = 'Junk Purple',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+
+    ['junk_red'] = {
+		label = 'Junk Red',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+    
