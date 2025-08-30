@@ -55,18 +55,19 @@ end
 local function triggerJunkEffects()
     Core.Interface.notify(_L('notify_title'), _L('feel_junked'), 'success')
     SetTransitionTimecycleModifier('rply_contrast', 1.0)
+    effectsActive = true
     for i = 1, 60 do
         SetTimecycleModifierStrength(i * 0.01)
         Wait(0)
     end
-    if Cfg.Effects.StaminaBoost then
+    if Cfg.Options.Effects.StaminaBoost then
         StatSetInt(`MP0_STAMINA`, 75, true)
     end
-    if Cfg.Effects.SprintBoost then
+    if Cfg.Options.Effects.SprintBoost then
         boostSprintSpeed()
     end
-    _debug('[^6DEBUG^0] - Junk effects applied for ' .. Cfg.Effects.Duration .. ' seconds.')
-    SetTimeout((Cfg.Effects.Duration * 1000), function()
+    _debug('[^6DEBUG^0] - Junk effects applied for ' .. Cfg.Options.Effects.Duration .. ' seconds.')
+    SetTimeout((Cfg.Options.Effects.Duration * 1000), function()
         resetEffects()
     end)
 end
