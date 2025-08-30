@@ -1,43 +1,48 @@
 ---@diagnostic disable: undefined-global
+
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-name 'r_energydrinks'
-description 'A simple energy drink resource to give your players a boost!'
-author 'r_scripts'
-version '1.0.4'
+name 'resource-name'
+description 'fivem-react-mantine'
+author 'rumaier'
+version '1.0.0'
 
 shared_scripts {
-    '@ox_lib/init.lua',
-    'utils/shared.lua',
-    'locales/*.lua',
-    'config.lua',
+  '@ox_lib/init.lua',
+  'utils/shared.lua',
+  'core/shared/*.lua',
+  'locales/*.lua',
+  'configs/*.lua'
 }
 
 server_scripts {
-    'utils/server.lua',
-    'src/server/*.lua',
+  -- '@oxmysql/lib/MySQL.lua',
+  'utils/server.lua',
+  'core/server/*.lua',
 }
 
 client_scripts {
-    'utils/client.lua',
-    'src/client/*.lua',
+  'utils/client.lua',
+  'core/client/*.lua',
 }
 
+-- ui_page 'nui/build/index.html' --// TODO: uncomment and delete below line when for production
+ui_page 'http://localhost:5173/'
 files {
-    'assets/images/*.png',
+  'nui/build/index.html',
+  'nui/build/**/*'
 }
-
-data_file 'DLC_ITYP_REQUEST' 'rscripts_junkcans.ytyp'
 
 dependencies {
-    'ox_lib',
-    'r_bridge',
+  'ox_lib',
+  'r_bridge',
+  -- 'oxmysql'
 }
 
 escrow_ignore {
-    'install/**/*.*',
-    'locales/*.*',
-    'config.*' 
+  'install/**/*.*',
+  'locales/*.*',
+  'configs/*.lua',
 }

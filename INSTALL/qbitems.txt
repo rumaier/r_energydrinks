@@ -1,6 +1,0 @@
--- r_energydrinks
-junk_blue              = { name = 'junk_blue', label = 'Junk Blue', weight = 110, type = 'item', image = 'junk_blue.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Blue Junk Energy' },
-junk_green             = { name = 'junk_green', label = 'Junk Green', weight = 110, type = 'item', image = 'junk_green.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Green Junk Energy' },
-junk_orange            = { name = 'junk_orange', label = 'Junk Orange', weight = 110, type = 'item', image = 'junk_orange.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Orange Junk Energy' },
-junk_purple            = { name = 'junk_purple', label = 'Junk Purple', weight = 110, type = 'item', image = 'junk_purple.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Purple Junk Energy' },
-junk_red               = { name = 'junk_red', label = 'Junk Red', weight = 110, type = 'item', image = 'junk_red.png', unique = false, useable = true, shouldClose = true, combinable = nil, description = 'Red Junk Energy' },

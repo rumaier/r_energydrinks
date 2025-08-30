@@ -1,35 +1,14 @@
 Language = Language or {}
 Language['de'] = { -- German
 
-    -- Zieloptionen
-    open_machine = 'Junk-Maschine öffnen',
+    -- Webhook
+    player_id = 'Spieler-ID',
+    username = 'Benutzername',
+    identifier = 'Kennung',
 
-    -- Benachrichtigungen
-    already_junked = 'Du bist schon von Junk aufgedreht!',
-    feel_junked = 'Du spürst das Junk durch deine Adern strömen!',
-    wore_off = 'Das Junk hat nachgelassen...',
-    not_enough_money = 'Du hast nicht genug Geld!',
-    bought_junk = 'Du hast ein Junk Energy Drink gekauft!',
-
-    -- Fortschrittsbalken
-    drinking_junk = 'Junk trinken...',
-
-    -- Menü-Titel
-    junk_machine = 'Junk-Maschine',
-
-    -- Menüoptionen
-    junk_blue = 'Blaues Junk',
-    junk_red = 'Rotes Junk',
-    junk_orange = 'Orangenes Junk',
-    junk_purple = 'Lilanes Junk',
-    junk_green = 'Grünes Junk',
-
-    -- Server-Konsole
-    version = '%s | v%s',
-    framework = 'Framework: %s',
-    inventory = 'Inventar: %s',
-    target = 'Ziel: %s',
-    cheater = 'Wegen Cheatens gekickt.',
-    update = 'Bitte aktualisiere %s auf die neueste Version von Github.',
-
+    -- Console
+    resource_version = '%s | v%s',
+    bridge_detected = '^2Brücke erkannt und geladen.^0',
+    bridge_not_detected = '^1Brücke nicht erkannt, bitte stellen Sie sicher, dass sie läuft.^0',
+    cheater_print = 'Sie haben versucht, das System zu überlisten. Das System hat Sie überlistet.',
 }

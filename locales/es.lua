@@ -1,35 +1,14 @@
 Language = Language or {}
 Language['es'] = { -- Spanish
 
-    -- Opciones de objetivo
-    open_machine = 'Abrir máquina de Junk',
+    -- Webhook
+    player_id = 'ID de Jugador',
+    username = 'Nombre de usuario',
+    identifier = 'Identificador',
 
-    -- Notificaciones
-    already_junked = '¡Ya estás acelerado con Junk!',
-    feel_junked = '¡Sientes el Junk corriendo por tus venas!',
-    wore_off = 'El efecto del Junk se ha terminado...',
-    not_enough_money = '¡No tienes suficiente dinero!',
-    bought_junk = '¡Compraste una bebida energética Junk!',
-
-    -- Barras de progreso
-    drinking_junk = 'Tomando Junk...',
-
-    -- Títulos del menú
-    junk_machine = 'Máquina de Junk',
-
-    -- Opciones del menú
-    junk_blue = 'Junk azul',
-    junk_red = 'Junk rojo',
-    junk_orange = 'Junk naranja',
-    junk_purple = 'Junk morado',
-    junk_green = 'Junk verde',
-
-    -- Consola del servidor
-    version = '%s | v%s',
-    framework = 'Framework: %s',
-    inventory = 'Inventario: %s',
-    target = 'Objetivo: %s',
-    cheater = 'Expulsado por hacer trampa.',
-    update = 'Por favor, actualiza %s a la última versión de Github.',
-
+    -- Console
+    resource_version = '%s | v%s',
+    bridge_detected = '^2Puente detectado y cargado.^0',
+    bridge_not_detected = '^1Puente no detectado, por favor asegúrese de que esté en ejecución.^0',
+    cheater_print = 'Intentaste burlar al sistema. El sistema te burló a ti.',
 }
