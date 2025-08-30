@@ -202,6 +202,7 @@ end
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
         despawnVendingMachine()
+        Core.Target.removeModel('sf_prop_sf_vend_drink_01a')
         for _, point in pairs(machinePoints) do
             point:remove()
         end
