@@ -38,29 +38,3 @@ AddEventHandler('onResourceStart', function(resourceName)
     checkResourceVersion()
     -- buildDatabase()
 end)
-
-function SendWebhook(src, event, fields)
-    if not Cfg.Options.WebhookEnabled then return end
-    local srcName = src > 0 and GetPlayerName(src) or 'Server'
-    local srcId = src > 0 and Core.Framework.getPlayerIdentifier(src) or 'N/A'
-    PerformHttpRequest(Cfg.WebhookUrl, function()
-    end, 'POST', json.encode({
-        username = 'Resource Logs',
-        avatar_url = 'https://i.ibb.co/N62P014g/logo-2.jpg',
-        embeds = {
-            {
-                title = event,
-                color = 0x2C1B47,
-                image = { url = 'https://i.ibb.co/vVMnc6Y/wide.png' },
-                fields = {
-                    { name = _L('player_id'),   value = '`' .. src .. '`',     inline = true },
-                    { name = _L('username'),    value = '`' .. srcName .. '`', inline = true },
-                    { name = utf8.char(0x200B), value = utf8.char(0x200B),     inline = true },
-                    table.unpack(fields or {})
-                },
-                footer = { text = GetCurrentResourceName() },
-                timestamp = os.date('!%Y-%m-%dT%H:%M:%S')
-            }
-        }
-    }), { ['Content-Type'] = 'application/json' })
-end
