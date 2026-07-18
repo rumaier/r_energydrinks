@@ -1,47 +1,44 @@
-local drinks = { 'junk_blue', 'junk_red', 'junk_orange', 'junk_purple', 'junk_green' }
-
-local function isPlayerNearVendingMachine(src)
+local function isPlayerNearMachine(src)
+    local nearest = math.huge
     local player = GetPlayerPed(src)
-    local playerCoords = GetEntityCoords(player)
-    local locations = Cfg.Options.VendingMachines.Locations
-    local distance = math.huge
-    for _, coords in pairs(locations) do
-        local dist = #(playerCoords - coords.xyz)
-        if dist < distance then distance = dist end
+    local coords = GetEntityCoords(player)
+    for _, machine in pairs(Cfg.MachineLocations) do
+        local distance = #(coords - machine.xyz)
+        if distance < nearest then
+            nearest = distance
+        end
     end
-    return distance <= 5.0
+    return nearest <= 5.0
 end
 
-lib.callback.register('r_energydrinks:buyDrink', function(src, color)
-    local nearMachine = isPlayerNearVendingMachine(src)
-    if not nearMachine then _debug('[^ERROR^0] - Player ' .. src .. ' tried to buy drink but is not near a vending machine.') return false end
-    local price = Cfg.Options.VendingMachines.DrinkPrice
-    local balance = Core.Framework.getAccountBalance(src, 'money')
-    if balance < price then return false, _L('not_enough_money') end
-    Core.Framework.removeAccountBalance(src, 'money', price)
-    local newBalance = Core.Framework.getAccountBalance(src, 'money')
-    if newBalance ~= (balance - price) then _debug('[^ERROR^0] - Player ' .. src .. ' balance mismatch after drink purchase. Expected: ' .. (balance - price) .. ', Actual: ' .. newBalance) return false end
+lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
+    if not isPlayerNearMachine(src) then
+        print('^1[r_energydrinks]^0 Player ' .. src .. ' is not near a vending machine')
+        return false
+    end
+    if bridge.framework.getBalance(src, 'cash') < Cfg.DrinkPrice then
+        return false, 'insufficient_funds'
+    end
+    bridge.framework.removeBalance(src, 'cash', Cfg.DrinkPrice)
     SetTimeout(3500, function()
-        local item = ('junk_%s'):format(color)
-        Core.Inventory.addItem(src, item, 1)
+        bridge.inventory.addItem(src, 'junk_' .. color, 1)
     end)
     return true
 end)
 
-local function registerUsableDrinkItems()
-    for index, item in ipairs(drinks) do
-        Core.Framework.registerUsableItem(item, function(src, item, data)
+local function registerDrinkItems()
+    local colors = { 'blue', 'red', 'orange', 'purple', 'green' }
+    for _, color in pairs(colors) do
+        bridge.framework.registerUsableItem('junk_' .. color, function(src, item, data)
             item = data or item
-            Core.Inventory.removeItem(src, item, 1)
-            local drank = lib.callback.await('r_energydrinks:drinkJunk', src, drinks[index]:gsub('junk_', ''))
-            if not drank then Core.Inventory.addItem(src, item, 1) end
+            if lib.callback.await('r_energydrinks:drink', src, color) then
+                bridge.inventory.removeItem(src, item.name, 1)
+            end
         end)
     end
-    _debug('[^6DEBUG^0] - Registered ' .. #drinks .. ' usable drink items')
 end
 
 AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        registerUsableDrinkItems()
-    end
+    if resource ~= GetCurrentResourceName() then return end
+    registerDrinkItems()
 end)
