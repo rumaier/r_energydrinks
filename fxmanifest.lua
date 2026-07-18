@@ -4,7 +4,7 @@ game 'gta5'
 lua54 'yes'
 
 name 'r_energydrinks'
-description 'A simple energy drink resource to give your players a boost!'
+description 'A simple energy drink resource for FiveM.'
 author 'r_scripts'
 version '2.0.0'
 
