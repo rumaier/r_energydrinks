@@ -16,10 +16,10 @@ lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
         print('^1[r_energydrinks]^0 Player ' .. src .. ' is not near a vending machine')
         return false
     end
-    if bridge.framework.getBalance(src, 'cash') < Cfg.DrinkPrice then
+    if bridge.framework.getBalance(src, 'money') < Cfg.DrinkPrice then
         return false, 'insufficient_funds'
     end
-    bridge.framework.removeBalance(src, 'cash', Cfg.DrinkPrice)
+    bridge.framework.removeBalance(src, 'money', Cfg.DrinkPrice)
     SetTimeout(3500, function()
         bridge.inventory.addItem(src, 'junk_' .. color, 1)
     end)
