@@ -1,4 +1,4 @@
-﻿local MACHINE_RADIUS = 5.0
+local MACHINE_RADIUS = 5.0
 local PURCHASE_COOLDOWN_MS = 1000
 
 local cooldowns = {}
