@@ -3,10 +3,6 @@ local PURCHASE_COOLDOWN_MS = 1000
 
 local cooldowns = {}
 
-local function warn(src, message)
-    print(('^1[r_energydrinks]^0 Player %s %s'):format(src, message))
-end
-
 local function getCooldownKey(src, action)
     return ('%s:%s'):format(src, action)
 end
@@ -63,25 +59,25 @@ end)
 
 lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
     if isOnCooldown(src, 'purchase', PURCHASE_COOLDOWN_MS) then
-        warn(src, 'rate limited purchaseDrink')
+        log('warn', ('Player %s %s'):format(src, 'rate limited purchaseDrink'))
         return false
     end
     if not Cfg.EnableMachines then
-        warn(src, 'blocked purchaseDrink while machines disabled')
+        log('warn', ('Player %s %s'):format(src, 'blocked purchaseDrink while machines disabled'))
         return false
     end
     if type(color) ~= 'string' then
-        warn(src, 'invalid color type for purchaseDrink')
+        log('warn', ('Player %s %s'):format(src, 'invalid color type for purchaseDrink'))
         return false
     end
     if not isPlayerNearMachine(src) then
-        warn(src, 'attempted purchaseDrink away from machine')
+        log('warn', ('Player %s %s'):format(src, 'attempted purchaseDrink away from machine'))
         return false
     end
 
     local itemName = 'junk_' .. color
     if not bridge.inventory.canCarry(src, itemName, 1) then
-        warn(src, 'cannot carry purchased drink')
+        log('warn', ('Player %s %s'):format(src, 'cannot carry purchased drink'))
         return false
     end
 
@@ -91,12 +87,12 @@ lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
     end
 
     if not removeMoney(src, price) then
-        warn(src, 'failed to remove money for purchaseDrink')
+        log('warn', ('Player %s %s'):format(src, 'failed to remove money for purchaseDrink'))
         return false
     end
 
     if not bridge.inventory.addItem(src, itemName, 1) then
-        warn(src, 'failed to add drink after purchase')
+        log('warn', ('Player %s %s'):format(src, 'failed to add drink after purchase'))
         refundMoney(src, price)
         return false
     end
@@ -112,12 +108,12 @@ local function registerDrinkItems()
             item = data or item
             if not item or not item.name then return end
             if (bridge.inventory.getItemCount(src, item.name) or 0) < 1 then
-                warn(src, 'attempted to drink without item')
+                log('warn', ('Player %s %s'):format(src, 'attempted to drink without item'))
                 return
             end
             if lib.callback.await('r_energydrinks:drink', src, color) then
                 if not bridge.inventory.removeItem(src, item.name, 1) then
-                    warn(src, 'failed to remove drink item after use')
+                    log('warn', ('Player %s %s'):format(src, 'failed to remove drink item after use'))
                 end
             end
         end)
