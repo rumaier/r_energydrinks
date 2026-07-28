@@ -1,18 +1,19 @@
 Language = Language or {}
+Cfg = Cfg or {}
 
 function locale(key, ...)
-    local locale = Cfg.Language
+    local language = Cfg.Language or 'en'
     if not key then
         return 'ERR_TRANSLATE_NO_KEY'
     end
-    local string = Language[locale] and Language[locale][key]
+    local string = Language[language] and Language[language][key]
     if not string then
-        return 'ERR_TRANSLATE_'..locale..'_'..key
+        return 'ERR_TRANSLATE_' .. language .. '_' .. key
     end
     return string:format(...)
 end
 
 function _debug(...)
-    if not Cfg.Debug then return end
+    if not Cfg or not Cfg.Debug then return end
     print('[^6DEBUG^0] ' .. ...)
 end

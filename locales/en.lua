@@ -7,6 +7,7 @@ Language['en'] = {
     purchase_success = 'You have purchased a %s energy drink.',
     drinking = 'Drinking...',
     feel_junked = 'You feel the junk in your veins!',
+    effects_active = 'You already have energy drink effects active.',
     effects_ended = 'The energy drink has worn off.',
     
     bridge_loaded = 'Bridge loaded successfully.',

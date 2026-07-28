@@ -10,6 +10,7 @@ local CAN_MODELS = {
 local spawners = {}
 local spawnedMachine = nil
 local effectsActive = false
+local machinesInitialized = false
 
 local function resetEffects()
     local strength = GetTimecycleModifierStrength()
@@ -44,7 +45,7 @@ local function triggerEffects()
             end
         end)
     end
-    SetTimeout(Cfg.EffectsDuration * 1000, function()
+    SetTimeout((Cfg.EffectsDuration or 60) * 1000, function()
         resetEffects()
     end)
 end
@@ -72,13 +73,14 @@ lib.callback.register('r_energydrinks:drink', function(color)
 end)
 
 RegisterNUICallback('purchaseDrink', function(data, cb)
-    if not spawnedMachine then return end
+    if not spawnedMachine then
+        cb(false)
+        return
+    end
     local success, err = lib.callback.await('r_energydrinks:purchaseDrink', false, data.color)
-    if not success and not err then
-        error('Failed to purchase drink, check server console for more information')
-    elseif not success and err then
+    if not success and err then
         bridge.interface.notify(locale('energy_drinks'), locale(err), 'error')
-    else
+    elseif success then
         SetTimeout(3500, function()
             bridge.interface.notify(locale('energy_drinks'), locale('purchase_success', data.color), 'success')
         end)
@@ -88,7 +90,7 @@ RegisterNUICallback('purchaseDrink', function(data, cb)
 end)
 
 local function openVendingInterface()
-    if not spawnedMachine then return end
+    if not Cfg.EnableMachines or not spawnedMachine then return end
     TaskTurnPedToFaceEntity(cache.ped, spawnedMachine, -1)
     repeat Wait(100) until bridge.natives.isPedFacingEntity(cache.ped, spawnedMachine)
     ClearPedTasks(cache.ped)
@@ -109,10 +111,11 @@ local function spawnMachine(data)
     PlaceObjectOnGroundProperly(spawnedMachine)
     FreezeEntityPosition(spawnedMachine, true)
     _debug('Machine spawned at ' .. data.coords)
-end 
+end
 
 local function initMachines()
-    if #spawners > 0 then return end
+    if machinesInitialized then return end
+    if not Cfg.EnableMachines or not Cfg.MachineLocations then return end
     for _, coords in pairs(Cfg.MachineLocations) do
         table.insert(spawners, lib.points.new({
             coords = coords.xyz,
@@ -127,14 +130,29 @@ local function initMachines()
             label = locale('use_machine'),
             icon = 'fas fa-bottle-water',
             distance = 1.0,
-            onSelect = openVendingInterface
+            onSelect = openVendingInterface,
+            canInteract = function()
+                return Cfg.EnableMachines == true
+            end
         }
     })
+    machinesInitialized = true
     _debug(#spawners .. ' machine spawners initialized')
 end
 
-AddEventHandler('r_bridge:playerLoaded', function()
+local function tryInitMachines()
     initMachines()
+end
+
+AddEventHandler('r_energydrinks:clientConfigLoaded', tryInitMachines)
+
+AddEventHandler('r_bridge:playerLoaded', function()
+    tryInitMachines()
+end)
+
+CreateThread(function()
+    Wait(500)
+    tryInitMachines()
 end)
 
 AddEventHandler('onResourceStop', function(resource)
