@@ -102,7 +102,7 @@ local function despawnMachine()
     if not spawnedMachine then return end
     DeleteEntity(spawnedMachine)
     spawnedMachine = nil
-    _debug('Machine despawned')
+    log('debug','Machine despawned')
 end
 
 local function spawnMachine(data)
@@ -110,7 +110,7 @@ local function spawnMachine(data)
     spawnedMachine = bridge.natives.createObject(VEND_MODEL, data.coords, data.heading, false)
     PlaceObjectOnGroundProperly(spawnedMachine)
     FreezeEntityPosition(spawnedMachine, true)
-    _debug('Machine spawned at ' .. data.coords)
+    log('debug','Machine spawned at ' .. data.coords)
 end
 
 local function initMachines()
@@ -137,7 +137,7 @@ local function initMachines()
         }
     })
     machinesInitialized = true
-    _debug(#spawners .. ' machine spawners initialized')
+    log('debug',#spawners .. ' machine spawners initialized')
 end
 
 local function tryInitMachines()
