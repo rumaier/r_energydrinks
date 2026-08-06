@@ -1,21 +1,6 @@
 local MACHINE_RADIUS = 5.0
 local PURCHASE_COOLDOWN_MS = 1000
 
-local cooldowns = {}
-
-local function getCooldownKey(src, action)
-    return ('%s:%s'):format(src, action)
-end
-
-local function isOnCooldown(src, action, duration)
-    local last = cooldowns[getCooldownKey(src, action)]
-    return last and GetGameTimer() - last < duration
-end
-
-local function setCooldown(src, action)
-    cooldowns[getCooldownKey(src, action)] = GetGameTimer()
-end
-
 local function isPlayerNearMachine(src)
     if not Cfg.MachineLocations then return false end
     local player = GetPlayerPed(src)
@@ -58,7 +43,7 @@ lib.callback.register('r_energydrinks:getClientConfig', function()
 end)
 
 lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
-    if isOnCooldown(src, 'purchase', PURCHASE_COOLDOWN_MS) then
+    if IsOnCooldown(src, 'purchase', PURCHASE_COOLDOWN_MS) then
         log('warn', ('Player %s %s'):format(src, 'rate limited purchaseDrink'))
         return false
     end
@@ -97,7 +82,7 @@ lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
         return false
     end
 
-    setCooldown(src, 'purchase')
+    SetCooldown(src, 'purchase')
     return true
 end)
 
