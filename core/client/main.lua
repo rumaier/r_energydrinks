@@ -144,11 +144,12 @@ local function tryInitMachines()
     initMachines()
 end
 
-AddEventHandler('r_energydrinks:clientConfigLoaded', tryInitMachines)
-
-AddEventHandler('r_bridge:playerLoaded', function()
+AddEventHandler('r_energydrinks:clientConfigLoaded', function()
+    if not bridge.framework.isPlayerLoaded() then return end
     tryInitMachines()
 end)
+
+AddEventHandler('r_bridge:playerLoaded', tryInitMachines)
 
 CreateThread(function()
     Wait(500)
