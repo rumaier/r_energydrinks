@@ -1,15 +1,28 @@
 local resource = GetCurrentResourceName()
 local version = GetResourceMetadata(resource, 'version', 0)
-local cooldowns = {}
+local rateLimits = {}
 
-function IsOnCooldown(src, action, duration)
-    local last = cooldowns[('%s:%s'):format(src, action)]
+function IsRateLimited(src, action, duration)
+    local last = rateLimits[('%s:%s'):format(src, action)]
     return last and GetGameTimer() - last < duration
 end
 
-function SetCooldown(src, action)
-    cooldowns[('%s:%s'):format(src, action)] = GetGameTimer()
+function SetRateLimit(src, action)
+    rateLimits[('%s:%s'):format(src, action)] = GetGameTimer()
 end
+
+lib.callback.register('r_energydrinks:getClientConfig', function()
+    return {
+        Language = Cfg.Language,
+        NuiColor = Cfg.NuiColor,
+        Debug = Cfg.Debug,
+        EnableMachines = Cfg.EnableMachines,
+        MachineLocations = Cfg.MachineLocations,
+        GiveStaminaBoost = Cfg.GiveStaminaBoost,
+        BoostSprintSpeed = Cfg.BoostSprintSpeed,
+        EffectsDuration = Cfg.EffectsDuration,
+    }
+end)
 
 local function checkVersion()
     if not Cfg.VersionCheck then return end
@@ -34,7 +47,7 @@ end)
 AddEventHandler('playerDropped', function()
     local src = source
     local prefix = '^' .. src .. ':'
-    for key in pairs(cooldowns) do
-        if key:match(prefix) then cooldowns[key] = nil end
+    for key in pairs(rateLimits) do
+        if key:match(prefix) then rateLimits[key] = nil end
     end
 end)

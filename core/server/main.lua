@@ -1,5 +1,5 @@
 local MACHINE_RADIUS = 5.0
-local PURCHASE_COOLDOWN_MS = 1000
+local PURCHASE_RATE_LIMIT_MS = 1000
 
 local function isPlayerNearMachine(src)
     if not Cfg.MachineLocations then return false end
@@ -29,21 +29,8 @@ local function refundMoney(src, amount)
     return bridge.framework.getBalance(src, 'money') >= before + amount
 end
 
-lib.callback.register('r_energydrinks:getClientConfig', function()
-    return {
-        Language = Cfg.Language,
-        NuiColor = Cfg.NuiColor,
-        Debug = Cfg.Debug,
-        EnableMachines = Cfg.EnableMachines,
-        MachineLocations = Cfg.MachineLocations,
-        GiveStaminaBoost = Cfg.GiveStaminaBoost,
-        BoostSprintSpeed = Cfg.BoostSprintSpeed,
-        EffectsDuration = Cfg.EffectsDuration,
-    }
-end)
-
 lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
-    if IsOnCooldown(src, 'purchase', PURCHASE_COOLDOWN_MS) then
+    if IsRateLimited(src, 'purchase', PURCHASE_RATE_LIMIT_MS) then
         log('warn', ('Player %s %s'):format(src, 'rate limited purchaseDrink'))
         return false
     end
@@ -82,7 +69,7 @@ lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
         return false
     end
 
-    SetCooldown(src, 'purchase')
+    SetRateLimit(src, 'purchase')
     return true
 end)
 
