@@ -1,47 +1,98 @@
-local drinks = { 'junk_blue', 'junk_red', 'junk_orange', 'junk_purple', 'junk_green' }
+local MACHINE_RADIUS = 5.0
+local PURCHASE_RATE_LIMIT_MS = 1000
 
-local function isPlayerNearVendingMachine(src)
+local function isPlayerNearMachine(src)
+    if not Cfg.MachineLocations then return false end
     local player = GetPlayerPed(src)
-    local playerCoords = GetEntityCoords(player)
-    local locations = Cfg.Options.VendingMachines.Locations
-    local distance = math.huge
-    for _, coords in pairs(locations) do
-        local dist = #(playerCoords - coords.xyz)
-        if dist < distance then distance = dist end
+    if not player or player == 0 then return false end
+    local coords = GetEntityCoords(player)
+    local nearest = math.huge
+    for _, machine in pairs(Cfg.MachineLocations) do
+        local distance = #(coords - machine.xyz)
+        if distance < nearest then
+            nearest = distance
+        end
     end
-    return distance <= 5.0
+    return nearest <= MACHINE_RADIUS
 end
 
-lib.callback.register('r_energydrinks:buyDrink', function(src, color)
-    local nearMachine = isPlayerNearVendingMachine(src)
-    if not nearMachine then _debug('[^ERROR^0] - Player ' .. src .. ' tried to buy drink but is not near a vending machine.') return false end
-    local price = Cfg.Options.VendingMachines.DrinkPrice
-    local balance = Core.Framework.getAccountBalance(src, 'money')
-    if balance < price then return false, _L('not_enough_money') end
-    Core.Framework.removeAccountBalance(src, 'money', price)
-    local newBalance = Core.Framework.getAccountBalance(src, 'money')
-    if newBalance ~= (balance - price) then _debug('[^ERROR^0] - Player ' .. src .. ' balance mismatch after drink purchase. Expected: ' .. (balance - price) .. ', Actual: ' .. newBalance) return false end
-    SetTimeout(3500, function()
-        local item = ('junk_%s'):format(color)
-        Core.Inventory.addItem(src, item, 1)
-    end)
+local function removeMoney(src, amount)
+    local before = bridge.framework.getBalance(src, 'money')
+    if before < amount then return false end
+    bridge.framework.removeBalance(src, 'money', amount)
+    return bridge.framework.getBalance(src, 'money') <= before - amount
+end
+
+local function refundMoney(src, amount)
+    local before = bridge.framework.getBalance(src, 'money')
+    bridge.framework.addBalance(src, 'money', amount)
+    return bridge.framework.getBalance(src, 'money') >= before + amount
+end
+
+lib.callback.register('r_energydrinks:purchaseDrink', function(src, color)
+    if IsRateLimited(src, 'purchase', PURCHASE_RATE_LIMIT_MS) then
+        log('warn', ('Player %s %s'):format(src, 'rate limited purchaseDrink'))
+        return false
+    end
+    if not Cfg.EnableMachines then
+        log('warn', ('Player %s %s'):format(src, 'blocked purchaseDrink while machines disabled'))
+        return false
+    end
+    if type(color) ~= 'string' then
+        log('warn', ('Player %s %s'):format(src, 'invalid color type for purchaseDrink'))
+        return false
+    end
+    if not isPlayerNearMachine(src) then
+        log('warn', ('Player %s %s'):format(src, 'attempted purchaseDrink away from machine'))
+        return false
+    end
+
+    local itemName = 'junk_' .. color
+    if not bridge.inventory.canCarry(src, itemName, 1) then
+        log('warn', ('Player %s %s'):format(src, 'cannot carry purchased drink'))
+        return false
+    end
+
+    local price = Cfg.DrinkPrice
+    if bridge.framework.getBalance(src, 'money') < price then
+        return false, 'insufficient_funds'
+    end
+
+    if not removeMoney(src, price) then
+        log('warn', ('Player %s %s'):format(src, 'failed to remove money for purchaseDrink'))
+        return false
+    end
+
+    if not bridge.inventory.addItem(src, itemName, 1) then
+        log('warn', ('Player %s %s'):format(src, 'failed to add drink after purchase'))
+        refundMoney(src, price)
+        return false
+    end
+
+    SetRateLimit(src, 'purchase')
     return true
 end)
 
-local function registerUsableDrinkItems()
-    for index, item in ipairs(drinks) do
-        Core.Framework.registerUsableItem(item, function(src, item, data)
+local function registerDrinkItems()
+    local colors = { 'blue', 'red', 'orange', 'purple', 'green' }
+    for _, color in pairs(colors) do
+        bridge.framework.registerUsableItem('junk_' .. color, function(src, item, data)
             item = data or item
-            Core.Inventory.removeItem(src, item, 1)
-            local drank = lib.callback.await('r_energydrinks:drinkJunk', src, drinks[index]:gsub('junk_', ''))
-            if not drank then Core.Inventory.addItem(src, item, 1) end
+            if not item or not item.name then return end
+            if (bridge.inventory.getItemCount(src, item.name) or 0) < 1 then
+                log('warn', ('Player %s %s'):format(src, 'attempted to drink without item'))
+                return
+            end
+            if lib.callback.await('r_energydrinks:drink', src, color) then
+                if not bridge.inventory.removeItem(src, item.name, 1) then
+                    log('warn', ('Player %s %s'):format(src, 'failed to remove drink item after use'))
+                end
+            end
         end)
     end
-    _debug('[^6DEBUG^0] - Registered ' .. #drinks .. ' usable drink items')
 end
 
 AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        registerUsableDrinkItems()
-    end
+    if resource ~= GetCurrentResourceName() then return end
+    registerDrinkItems()
 end)

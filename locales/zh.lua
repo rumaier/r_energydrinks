@@ -1,14 +1,9 @@
 Language = Language or {}
-Language['zh'] = { -- Simplified Chinese
+Language['zh'] = {
 
-    -- Webhook
-    player_id = '玩家ID',
-    username = '用户名',
-    identifier = '标识符',
+    effects_active = '能量饮料效果仍在生效中。',
 
-    -- Console
-    resource_version = '%s | v%s',
-    bridge_detected = '^2桥接已检测并加载。^0',
-    bridge_not_detected = '^1未检测到桥接，请确保它正在运行。^0',
-    cheater_print = '你试图智取系统。系统反过来智取了你。',
+    bridge_loaded = '桥接加载成功。',
+    update_bridge = '请将 r_bridge 更新到 v3.0.0 或更高版本！',
+    debug_enabled = '调试模式已开启！请勿在生产环境中使用！',
 }
